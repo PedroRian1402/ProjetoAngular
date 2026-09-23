@@ -1,1 +1,42 @@
-<p>project-form works!</p>
+<form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+    <div>
+        <h2>Criar Novo Projeto</h2>
+    </div>
+
+    <div>
+        <label for="projectName">Nome do Projeto</label>
+        <input id="projectName" type="text" formControlName= "name" placeholder="Ex: Meu projeto">
+
+        @if(projectForm.get('name')?.invalid && projectForm.get('name')?.touched){
+            <div>
+                @if (projectForm.get('name')?.errors?.['required']){
+                    <span>O nome é obrigatório</span>
+                }
+                @if (projectForm.get('name')?.errors?.['minlengeth']){
+                    <span>O nome deve ter pelo menos 3 caracteres.</span>
+                }
+            </div>
+        }
+    </div>
+
+    <div>
+        <label for="projectDescription">Descrição do Projeto</label>
+        <textarea name="projectDescription" id="projectDescription" formControlName="description" rows="4" placeholder="Descreva o objetivo do seu projeto..."></textarea>
+
+        @if(projectForm.get('description')?.invalid && projectForm.get('description')?.touched){
+            <div>
+                @if(projectForm.get('description')?.errors?.['required']){
+                    <span>A descrição é obrigatória.</span>
+                }
+                @if(projectForm.get('description')?.errors?.['minlength']){
+                    <span>Escreva uma descrição com pelo menos 4 caracteres</span>
+                }
+            </div>
+        }
+    </div>
+
+    <div>
+        <button type="button" (click)="cancel.emit()">Cancelar</button>
+        <button type="button" [disabled]="projectForm.invalid">Criar Projeto</button>
+    </div>
+</form>

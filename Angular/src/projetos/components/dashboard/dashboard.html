@@ -6,9 +6,16 @@
       <p>Gira os seus projetos, acompanhe o progresso e adicione novas tarefas.</p>
     </div>
     
-    <button (click)="openCreateModal()">Novo Projeto
+    <button (click)="isModalOpen = true">Novo Projeto
     </button>
+
+    @if(isModalOpen) {
+        <div>
+            <app-project-form (submitSuccess)="handleCreateProject($event)" (cancel)="isModalOpen = false"></app-project-form>
+        </div>
+    }
   </div>
+
 
 
   <div >
