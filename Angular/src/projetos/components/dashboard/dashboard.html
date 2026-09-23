@@ -1,0 +1,26 @@
+<div>
+  
+  <div >
+    <div>
+      <h1>Dashboard de Projetos</h1>
+      <p>Gira os seus projetos, acompanhe o progresso e adicione novas tarefas.</p>
+    </div>
+    
+    <button (click)="openCreateModal()">Novo Projeto
+    </button>
+  </div>
+
+
+  <div >
+    @for (projectItem of projects; track projectItem.id) {
+      <app-project-card [project]="projectItem"></app-project-card>
+    } @empty {
+      
+      <div>
+        <p>Ainda não existem projetos criados.</p>
+        <p>Clique em "Novo Projeto" para começar.</p>
+      </div>
+    }
+  </div>
+
+</div>
