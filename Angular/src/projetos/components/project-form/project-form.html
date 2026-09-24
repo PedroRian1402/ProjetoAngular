@@ -36,6 +36,23 @@
     </div>
 
     <div>
+        <span>Tarefas do Projeto</span>
+        <button type="button" (click)="addTask()">Adicionar tarefa</button>
+    </div>
+
+    <div formArrayName="task">
+        @for (taskGroup of taskArray.controls; track $index){
+            <div [formGroupName]="$index">
+                <input type="text" formControlName="title" placeholder="Ex: Desenvolver CSS"/>
+
+                <button type="button" (click)="removeTask($index)">X</button>
+            </div>
+        } @empty {
+            <p>Nenhuma tarefa adicionada.</p>
+        }
+    </div>
+
+    <div>
         <button type="button" (click)="cancel.emit()">Cancelar</button>
         <button type="submit" [disabled]="projectForm.invalid">Criar Projeto</button>
     </div>

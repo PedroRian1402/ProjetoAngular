@@ -13,5 +13,6 @@ export interface Task{
 
 export interface CreateProject{
     name: string;
-    description: string
+    description: string;
+    task : Task[];
 }

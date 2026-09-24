@@ -10,3 +10,19 @@
         </span>
     </div>
 </div>
+
+<div>
+    @for(t of project.task; track t.id){
+        <div>
+            <input type="checkbox" [checked]="t.isCompleted" (change)="toggleTaskStatus(t)">
+            <span>{{ t.title }}</span>
+        </div>
+    } @empty {
+        Sem tarefas associadas ao Projeto.
+    }
+</div>
+
+<div>
+    <input #taskInput  type="text" placeholder="Nova tarefa..">
+    <button type="button" (click)="addNewTaskToProject(taskInput.value); taskInput.value = ''">+</button>
+</div>

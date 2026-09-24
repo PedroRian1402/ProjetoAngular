@@ -13,10 +13,10 @@ export class ProjectService {
     }
 
     createProject(projectData: CreateProject): Observable<Project>{
-        const newProjectPayload = {
-            ...projectData,
-            task: []
-        }
-        return this.http.post<Project>(this.apiUrl, newProjectPayload)
+        return this.http.post<Project>(this.apiUrl,  projectData)
+    }
+
+    updateProject(project: Project): Observable<Project> {
+        return this.http.put<Project>(`${this.apiUrl}/${project.id}`, project)
     }
 }

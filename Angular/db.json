@@ -14,14 +14,69 @@
           "id": "102",
           "title": "Criar cards para cada projeto.",
           "isCompleted": true
+        },
+        {
+          "id": "zza596v",
+          "title": "afa",
+          "isCompleted": false
         }
       ]
     },
     {
       "name": "Pedro",
       "description": "Olá,mundo!",
-      "task": [],
+      "task": [
+        {
+          "id": "g6b7ja4",
+          "title": "afazeres1",
+          "isCompleted": true
+        },
+        {
+          "id": "23pnr79",
+          "title": "afazeres2",
+          "isCompleted": true
+        },
+        {
+          "id": "dvqvqle",
+          "title": "afazeres3",
+          "isCompleted": true
+        }
+      ],
       "id": "2WiZtXFJwEI"
+    },
+    {
+      "name": "dada",
+      "description": "dadad",
+      "task": [
+        {
+          "id": "f9frzec",
+          "title": "dad",
+          "isCompleted": true
+        }
+      ],
+      "id": "xDCnshbqASg"
+    },
+    {
+      "name": "teste1",
+      "description": "abcbcbc",
+      "task": [
+        {
+          "id": "nhq5vxg",
+          "title": "abrao",
+          "isCompleted": true
+        },
+        {
+          "id": "lf703h5",
+          "title": "arfae",
+          "isCompleted": false
+        },
+        {
+          "id": "8wmc7u1",
+          "title": "aeae",
+          "isCompleted": false
+        }
+      ],
+      "id": "-JwE4teUngE"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
