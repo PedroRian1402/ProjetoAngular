@@ -1,32 +1,32 @@
-<div>
+<div class="dashboard-container">
 
-  <div>
+  <!-- Cabeçalho -->
+  <div class="dashboard-header">
     <div>
       <h1>Dashboard de Projetos</h1>
-      <p>Gira os seus projetos, acompanhe o progresso e adicione novas tarefas.</p>
+      <p>Gira os seus projetos e acompanhe o progresso.</p>
     </div>
 
-    <button (click)="isModalOpen = true">Novo Projeto
+    <button class="btn-toggle" (click)="isModalOpen = !isModalOpen">
+      {{ isModalOpen ? 'Fechar Formulário' : 'Novo Projeto' }}
     </button>
-
-    @if(isModalOpen) {
-    <div>
-      <app-project-form (submitSuccess)="handleCreateProject($event)" (cancel)="isModalOpen = false">
-      </app-project-form>
-    </div>
-    }
   </div>
 
+  <!-- Formulário  -->
+  @if(isModalOpen) {
+  <div class="form-section">
+    <app-project-form (submitSuccess)="handleCreateProject($event)" (cancel)="isModalOpen = false">
+    </app-project-form>
+  </div>
+  }
 
-
-  <div>
+  <!-- Lista de Projetos -->
+  <div class="projects-list">
     @for (projectItem of projects; track projectItem.id) {
     <app-project-card [project]="projectItem" (projectDeleted)="handleDeleteProject($event)"></app-project-card>
     } @empty {
-
-    <div>
-      <p>Ainda não existem projetos criados.</p>
-      <p>Clique em "Novo Projeto" para começar.</p>
+    <div class="empty-state">
+      <p>Nenhum projeto criado. Clique em "Novo Projeto" para começar.</p>
     </div>
     }
   </div>

@@ -1,68 +1,83 @@
-<div>
-    <h3>{{ project.name }}</h3>
-    <p>{{ project.description }}</p>
-    <div>
-        <span>
-            Tarefas: {{ completedTasks }}/{{ totalTasks }}
-        </span>
-        <span>
-            {{ progressPercentage }}%
-        </span>
+<div class="project-card">
+
+    <!-- Cabeçalho do Projeto e Progresso -->
+    <div class="card-header">
+        <div class="header-main">
+            <h3>{{ project.name }}</h3>
+            <p class="project-desc">{{ project.description }}</p>
+        </div>
+        <div class="progress-box">
+            <span class="progress-count">Tarefas: {{ completedTasks }}/{{ totalTasks }}</span>
+            <span class="progress-badge">{{ progressPercentage }}%</span>
+        </div>
     </div>
 
-</div>
+    <!-- Corpo do Cartão: Tarefas -->
+    <div class="card-body">
+        <h4>Lista de Tarefas</h4>
 
-<!-- Secção da Lista de Tarefas -->
-<div>
-    <h4>Lista de Tarefas:</h4>
-    <div>
-        @for (t of project.task; track t.id) {
-        <div>
-            <input type="checkbox" [checked]="t.status === 'concluída'" (change)="toggleTaskStatus(t)">
-            <span [style.text-decoration]="t.status === 'concluída' ? 'line-through' : 'none'">
-                {{ t.title }}
-            </span>
+        <div class="tasks-container">
+            @for (t of project.task; track t.id) {
+            <div class="task-item">
+                <div class="task-main-info">
+                    <label class="task-checkbox-label">
+                        <input type="checkbox" [checked]="t.status === 'concluída'" (change)="toggleTaskStatus(t)">
+                        <span [style.text-decoration]="t.status === 'concluída' ? 'line-through' : 'none'"
+                            class="task-title">
+                            {{ t.title }}
+                        </span>
+                    </label>
 
+                    <!-- Detalhes Secundários da Tarefa -->
+                    <div class="task-details">
+                        <p><strong>Descrição:</strong> {{ t.description }}</p>
+                        <p><strong>Data Limite:</strong> {{ t.dueDate }}</p>
+                        <p><strong>Estado:</strong> <span class="status-text">{{ t.status }}</span></p>
+                    </div>
+                </div>
 
-            <div>
-                <p>Descrição: {{ t.description }}</p>
-                <p>Data Limite: {{ t.dueDate }}</p>
-                <p>Estado Atual: <strong>{{ t.status }}</strong></p>
+                <button type="button" class="btn-text-danger" (click)="deleteTaskFromProject(t.id)">
+                    Remover
+                </button>
             </div>
+            } @empty {
+            <p class="empty-tasks">Sem tarefas associadas ao projeto.</p>
+            }
         </div>
 
-        <button type="button" (click)="deleteTaskFromProject(t.id)">
-            Remover Tarefa
-        </button>
+        <!-- Formulário Rápido para Criar Tarefa -->
+        <div class="quick-task-form">
+            <h5>Nova Tarefa</h5>
 
-        } @empty {
-        <p>Sem tarefas associadas ao Projeto.</p>
-        }
+            <div class="form-group-row">
+                <div class="form-field">
+                    <label [attr.for]="'new-title-' + project.id">Título</label>
+                    <input #newTitle [id]="'new-title-' + project.id" type="text" placeholder="Nome da tarefa" />
+                </div>
+
+                <div class="form-field">
+                    <label [attr.for]="'new-date-' + project.id">Data Limite</label>
+                    <input #newDate [id]="'new-date-' + project.id" type="date" />
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label [attr.for]="'new-desc-' + project.id">Descrição</label>
+                <textarea #newDesc [id]="'new-desc-' + project.id" rows="2"
+                    placeholder="O que precisa de ser feito?"></textarea>
+            </div>
+
+            <button type="button" class="btn-secondary" (click)="addNewTaskToProject(newTitle, newDesc, newDate)">
+                Adicionar tarefa
+            </button>
+        </div>
     </div>
 
-
-    <div>
-        <div>
-            <label [attr.for]="'new-title-' + project.id">Título:</label>
-            <input #newTitle [id]="'new-title-' + project.id" type="text" />
-        </div>
-
-        <div>
-            <label [attr.for]="'new-desc-' + project.id">Descrição:</label>
-            <textarea #newDesc [id]="'new-desc-' + project.id"></textarea>
-        </div>
-
-        <div>
-            <label [attr.for]="'new-date-' + project.id">Data Limite:</label>
-
-            <input #newDate [id]="'new-date-' + project.id" type="date" />
-        </div>
-
-        <button type="button" (click)="addNewTaskToProject(newTitle, newDesc, newDate)">
-            Adicionar tarefa
+    <!-- Rodapé do Cartão -->
+    <div class="card-footer">
+        <button type="button" class="btn-danger" (click)="removeProject()">
+            Eliminar Projeto
         </button>
     </div>
+
 </div>
-<button type="button" (click)="removeProject()">
-    Eliminar Projeto
-</button>

@@ -1,82 +1,94 @@
-<form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
-    <div>
+<form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="simple-form">
+    <div class="form-header">
         <h2>Criar Novo Projeto</h2>
     </div>
 
-    <div>
+    <!-- Campo: Nome do Projeto -->
+    <div class="form-group">
         <label for="projectName">Nome do Projeto</label>
-        <input id="projectName" type="text" formControlName= "name" placeholder="Ex: Meu projeto">
+        <input id="projectName" type="text" formControlName="name" placeholder="Ex: Meu projeto" class="form-input">
 
         @if(projectForm.get('name')?.invalid && projectForm.get('name')?.touched){
-            <div>
-                @if (projectForm.get('name')?.errors?.['required']){
-                    <span>O nome é obrigatório</span>
-                }
-                @if (projectForm.get('name')?.errors?.['minlengeth']){
-                    <span>O nome deve ter pelo menos 3 caracteres.</span>
-                }
-            </div>
+        <div class="error-message">
+            @if (projectForm.get('name')?.errors?.['required']){
+            <span>O nome é obrigatório.</span>
+            }
+            @if (projectForm.get('name')?.errors?.['minlength'] || projectForm.get('name')?.errors?.['minlengeth']){
+            <span>O nome deve ter pelo menos 3 caracteres.</span>
+            }
+        </div>
         }
     </div>
 
-    <div>
+    <!-- Campo: Descrição do Projeto -->
+    <div class="form-group">
         <label for="projectDescription">Descrição do Projeto</label>
-        <textarea name="projectDescription" id="projectDescription" formControlName="description" rows="4" placeholder="Descreva o objetivo do seu projeto..."></textarea>
+        <textarea name="projectDescription" id="projectDescription" formControlName="description" rows="3"
+            placeholder="Descreva o objetivo do seu projeto..." class="form-input"></textarea>
 
         @if(projectForm.get('description')?.invalid && projectForm.get('description')?.touched){
-            <div>
-                @if(projectForm.get('description')?.errors?.['required']){
-                    <span>A descrição é obrigatória.</span>
-                }
-                @if(projectForm.get('description')?.errors?.['minlength']){
-                    <span>Escreva uma descrição com pelo menos 4 caracteres</span>
-                }
-            </div>
+        <div class="error-message">
+            @if(projectForm.get('description')?.errors?.['required']){
+            <span>A descrição é obrigatória.</span>
+            }
+            @if(projectForm.get('description')?.errors?.['minlength']){
+            <span>Escreva uma descrição com pelo menos 4 caracteres.</span>
+            }
+        </div>
         }
     </div>
 
-    <div>
-        <span>Tarefas do Projeto</span>
-        <button type="button" (click)="addTask()">Adicionar tarefa</button>
+    <!-- Secção de Tarefas Iniciais -->
+    <div class="tasks-section-header">
+        <span>Tarefas do Projeto (Opcional)</span>
+        <button type="button" class="btn-secondary-sm" (click)="addTask()">+ Adicionar tarefa</button>
     </div>
 
-    <div formArrayName="task">
+    <!-- Lista de Tarefas do FormArray -->
+    <div formArrayName="task" class="form-tasks-list">
         @for (taskGroup of taskArray.controls; track $index){
-            <div [formGroupName]="$index">
-                
-                <div>
-                    <label  [attr.for]="'task-title-' + $index">Título da Tarefa</label>
-                    <input [id]="'task-title-' + $index" type="text" formControlName="title" placeholder="Ex: Criar rotas API" />
+        <div [formGroupName]="$index" class="form-task-card">
+
+            <div class="form-grid-row">
+                <div class="form-group flex-2">
+                    <label [attr.for]="'task-title-' + $index">Título da Tarefa</label>
+                    <input [id]="'task-title-' + $index" type="text" formControlName="title"
+                        placeholder="Ex: Criar rotas API" class="form-input-sm" />
                 </div>
 
-                <div>
-                    <label [attr.for]="'task-desc' + $index">Descrição da tarefa</label>
-                    <textarea [id]="'task-desc' + $index" formControlName="description" rows="2" placeholder="Descreva a tarefa"></textarea>
-                </div>
-
-                <div>
+                <div class="form-group flex-1">
                     <label [attr.for]="'task-date' + $index">Data Limite</label>
-                    <input type="date" [id]="'task-date' + $index" formControlName="dueDate">
+                    <input type="date" [id]="'task-date' + $index" formControlName="dueDate" class="form-input-sm">
                 </div>
 
-                <div>
-                    <label [attr.for]="'task.status-' + $index">Estado</label>
-                    <select [id]="'task-status-' + $index" formControlName="status-">
-                        <option value="pendente">Pedente</option>
+                <div class="form-group flex-1">
+                    <label [attr.for]="'task-status-' + $index">Estado</label>
+                    <select [id]="'task-status-' + $index" formControlName="status-" class="form-input-sm">
+                        <option value="pendente">Pendente</option>
                         <option value="em progresso">Em Progresso</option>
                         <option value="concluída">Concluída</option>
                     </select>
                 </div>
-
-                <button type="button" (click)="removeTask($index)">Remover</button>
             </div>
+
+            <div class="form-group">
+                <label [attr.for]="'task-desc' + $index">Descrição da tarefa</label>
+                <textarea [id]="'task-desc' + $index" formControlName="description" rows="2"
+                    placeholder="Descreva a tarefa" class="form-input-sm"></textarea>
+            </div>
+
+            <div class="task-card-actions">
+                <button type="button" class="btn-text-danger" (click)="removeTask($index)">Remover esta tarefa</button>
+            </div>
+        </div>
         } @empty {
-            <p>Nenhuma tarefa adicionada.</p>
+        <p class="empty-array-text">Nenhuma tarefa adicionada a este novo projeto ainda.</p>
         }
     </div>
 
-    <div>
-        <button type="button" (click)="cancel.emit()">Cancelar</button>
-        <button type="submit" [disabled]="projectForm.invalid">Criar Projeto</button>
+    <!-- Ações do Formulário -->
+    <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="cancel.emit()">Cancelar</button>
+        <button type="submit" class="btn-submit" [disabled]="projectForm.invalid">Criar Projeto</button>
     </div>
 </form>
