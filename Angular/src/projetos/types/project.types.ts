@@ -1,3 +1,5 @@
+export type TaskStatus = 'pendente' | 'em progresso' | 'concluída'
+
 export interface Project {
     id : string;
     name : string;
@@ -8,7 +10,9 @@ export interface Project {
 export interface Task{
     id: string;
     title: string;
-    isCompleted: boolean;
+    description: string;
+    dueDate: string;
+    status: TaskStatus;
 }
 
 export interface CreateProject{
@@ -16,3 +20,4 @@ export interface CreateProject{
     description: string;
     task : Task[];
 }
+

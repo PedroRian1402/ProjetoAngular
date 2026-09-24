@@ -8,17 +8,27 @@
         {
           "id": "101",
           "title": "Definir Interfaces",
-          "isCompleted": true
+          "isCompleted": true,
+          "status": "concluída"
         },
         {
           "id": "102",
           "title": "Criar cards para cada projeto.",
-          "isCompleted": true
+          "isCompleted": true,
+          "status": "concluída"
         },
         {
           "id": "zza596v",
           "title": "afa",
-          "isCompleted": false
+          "isCompleted": false,
+          "status": "concluída"
+        },
+        {
+          "id": "6aq6el6",
+          "title": "ada",
+          "description": "Adicionada via Dashboard",
+          "dueDate": "2026-09-24",
+          "status": "pendente"
         }
       ]
     },
@@ -29,17 +39,20 @@
         {
           "id": "g6b7ja4",
           "title": "afazeres1",
-          "isCompleted": true
+          "isCompleted": true,
+          "status": "concluída"
         },
         {
           "id": "23pnr79",
           "title": "afazeres2",
-          "isCompleted": true
+          "isCompleted": true,
+          "status": "concluída"
         },
         {
           "id": "dvqvqle",
           "title": "afazeres3",
-          "isCompleted": true
+          "isCompleted": true,
+          "status": "concluída"
         }
       ],
       "id": "2WiZtXFJwEI"

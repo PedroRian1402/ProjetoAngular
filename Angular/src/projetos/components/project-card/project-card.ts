@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, inject, ChangeDetectorRef} from '@angular/core';
-import { Project, Task } from '../../types/project.types';
+import { Component, Input, inject, ChangeDetectorRef } from '@angular/core';
+import { Project, Task, TaskStatus } from '../../types/project.types';
 import { ProjectService } from '../../services/project';
 
 @Component({
@@ -10,50 +10,65 @@ import { ProjectService } from '../../services/project';
   templateUrl: './project-card.html',
 })
 export class ProjectCard {
-  @Input ({ required: true }) project!: Project
+  @Input({ required: true }) project!: Project
 
   private projectService = inject(ProjectService)
   private cdr = inject(ChangeDetectorRef)
 
-  get totalTasks():number {
+  get totalTasks(): number {
     return this.project.task ? this.project.task.length : 0
   }
 
   get completedTasks(): number {
-    return this.project.task ? this.project.task.filter( t => t.isCompleted).length : 0
+    return this.project.task ? this.project.task.filter(t => t.status === 'concluída').length : 0
   }
 
   get progressPercentage(): number {
-    return this.totalTasks > 0 ? Math.round((this.completedTasks / this.totalTasks) * 100): 0
+    return this.totalTasks > 0 ? Math.round((this.completedTasks / this.totalTasks) * 100) : 0
   }
 
-  addNewTaskToProject(taskTitle: string):void {
-    if (!taskTitle.trim()) return
+  addNewTaskToProject(titleInput: HTMLInputElement,
+    descInput: HTMLTextAreaElement,
+    dateInput: HTMLInputElement): void {
+    const title = titleInput.value
+    const description = descInput.value
+    const dueDate = dateInput.value
+
+    if (!title.trim() || description.trim() || !dueDate.trim()) {
+      alert('Por favor, preencha todos os campos da arefa.')
+      return
+    }
 
     const newTask: Task = {
-      id : Math.random().toString(36).substring(2, 9),
-      title: taskTitle,
-      isCompleted : false
+      id: Math.random().toString(36).substring(2, 9),
+      title: title,
+      description: description,
+      dueDate: dueDate,
+      status: 'pendente'
     }
 
     this.project.task = [...(this.project.task || []), newTask]
 
+    titleInput.value = ''
+    descInput.value = ''
+    dateInput.value = ''
+
     this.updateProjectOnServer()
   }
 
-  toggleTaskStatus(task: Task):void{
-    task.isCompleted = !task.isCompleted
+  toggleTaskStatus(task: Task): void {
+    task.status = task.status === 'concluída' ? 'pendente' : 'concluída'
     this.updateProjectOnServer()
   }
 
-  private updateProjectOnServer():void {
+  private updateProjectOnServer(): void {
     this.projectService.updateProject(this.project).subscribe({
       next: (updateProject) => {
         this.project = updateProject
         this.cdr.detectChanges()
       },
-      error: (err)=>{
-        console.error('Erro ao atualizar o projeto no servidor:' , err)
+      error: (err) => {
+        console.error('Erro ao atualizar o projeto no servidor:', err)
       }
     })
   }

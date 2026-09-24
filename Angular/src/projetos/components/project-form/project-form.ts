@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators, FormGroup, FormArray } from '@angular/forms';
-import { CreateProject } from '../../types/project.types'
-import { NonNullAssert } from '@angular/compiler';
+import { CreateProject, TaskStatus} from '../../types/project.types'
 
 @Component({
   imports: [CommonModule, ReactiveFormsModule],
@@ -21,7 +20,9 @@ export class ProjectForm {
     task : new FormArray<FormGroup<{
       id : FormControl<string>
       title:FormControl<string>
-      isCompleted: FormControl<boolean>
+      description: FormControl<string>
+      dueDate: FormControl<string>
+      status: FormControl<TaskStatus>
     }>>([])
   })
 
@@ -33,7 +34,10 @@ export class ProjectForm {
     const taskGroup = new FormGroup({
       id: new FormControl(Math.random().toString(36).substring(2, 9), { nonNullable: true}),
       title : new FormControl('', { validators: [Validators.required], nonNullable: true}),
-      isCompleted : new FormControl(false, { nonNullable : true})
+      description: new FormControl('', {validators: [ Validators.required], nonNullable : true }),
+      dueDate : new FormControl('', { validators: [Validators.required], nonNullable : true}),
+      status: new FormControl<TaskStatus>('pendente', {nonNullable: true})
+      
     })
     this.taskArray.push(taskGroup)
   }

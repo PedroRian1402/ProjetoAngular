@@ -43,9 +43,32 @@
     <div formArrayName="task">
         @for (taskGroup of taskArray.controls; track $index){
             <div [formGroupName]="$index">
-                <input type="text" formControlName="title" placeholder="Ex: Desenvolver CSS"/>
+                
+                <div>
+                    <label  [attr.for]="'task-title-' + $index">Título da Tarefa</label>
+                    <input [id]="'task-title-' + $index" type="text" formControlName="title" placeholder="Ex: Criar rotas API" />
+                </div>
 
-                <button type="button" (click)="removeTask($index)">X</button>
+                <div>
+                    <label [attr.for]="'task-desc' + $index">Descrição da tarefa</label>
+                    <textarea [id]="'task-desc' + $index" formControlName="description" rows="2" placeholder="Descreva a tarefa"></textarea>
+                </div>
+
+                <div>
+                    <label [attr.for]="'task-date' + $index">Data Limite</label>
+                    <input type="date" [id]="'task-date' + $index" formControlName="dueDate">
+                </div>
+
+                <div>
+                    <label [attr.for]="'task.status-' + $index">Estado</label>
+                    <select [id]="'task-status-' + $index" formControlName="status-">
+                        <option value="pendente">Pedente</option>
+                        <option value="em progresso">Em Progresso</option>
+                        <option value="concluída">Concluída</option>
+                    </select>
+                </div>
+
+                <button type="button" (click)="removeTask($index)">Remover</button>
             </div>
         } @empty {
             <p>Nenhuma tarefa adicionada.</p>

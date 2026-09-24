@@ -14,7 +14,7 @@
 <div>
     @for(t of project.task; track t.id){
         <div>
-            <input type="checkbox" [checked]="t.isCompleted" (change)="toggleTaskStatus(t)">
+            <input type="checkbox" [checked]="t.status === 'concluída'" (change)="toggleTaskStatus(t)">
             <span>{{ t.title }}</span>
         </div>
     } @empty {
@@ -23,6 +23,23 @@
 </div>
 
 <div>
-    <input #taskInput  type="text" placeholder="Nova tarefa..">
-    <button type="button" (click)="addNewTaskToProject(taskInput.value); taskInput.value = ''">+</button>
+    <div>
+      <h5>+ Adicionar Nova Tarefa a este Projeto</h5>
+      
+      <div>
+        <label [attr.for]="'new-title-' + project.id">Título:</label>
+        <input #newTitle [id]="'new-title-' + project.id" type="text" placeholder="Título da tarefa" />
+      </div>
+
+      <div>
+        <label [attr.for]="'new-desc-' + project.id">Descrição:</label>
+        <textarea #newDesc [id]="'new-desc-' + project.id" placeholder="Descrição da tarefa"></textarea>
+      </div>
+
+      <div>
+        <label [attr.for]="'new-date-' + project.id">Data Limite:</label>
+        <input #newDate [id]="'new-date-' + project.id" type="date" />
+      </div>
+    
+    <button type="button" (click)="addNewTaskToProject(newTitle, newDesc, newDate)">Adicionar tarefa</button>
 </div>
