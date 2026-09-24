@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, inject, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { Project, Task, TaskStatus } from '../../types/project.types';
 import { ProjectService } from '../../services/project';
 
@@ -11,6 +11,8 @@ import { ProjectService } from '../../services/project';
 })
 export class ProjectCard {
   @Input({ required: true }) project!: Project
+
+  @Output() projectDeleted = new EventEmitter<string>()
 
   private projectService = inject(ProjectService)
   private cdr = inject(ChangeDetectorRef)
@@ -30,12 +32,12 @@ export class ProjectCard {
   addNewTaskToProject(titleInput: HTMLInputElement,
     descInput: HTMLTextAreaElement,
     dateInput: HTMLInputElement): void {
-    const title = titleInput.value
-    const description = descInput.value
-    const dueDate = dateInput.value
+    const title = titleInput.value.trim()
+    const description = descInput.value.trim()
+    const dueDate = dateInput.value.trim()
 
-    if (!title.trim() || description.trim() || !dueDate.trim()) {
-      alert('Por favor, preencha todos os campos da arefa.')
+    if (!title.trim() || !description.trim() || !dueDate.trim()) {
+      alert('Por favor, preencha todos os campos da tarefa.')
       return
     }
 
@@ -47,7 +49,8 @@ export class ProjectCard {
       status: 'pendente'
     }
 
-    this.project.task = [...(this.project.task || []), newTask]
+    const currentTasks = this.project.task ? this.project.task : []
+    this.project.task = [...currentTasks, newTask]
 
     titleInput.value = ''
     descInput.value = ''
@@ -71,6 +74,25 @@ export class ProjectCard {
         console.error('Erro ao atualizar o projeto no servidor:', err)
       }
     })
+  }
+
+  removeProject():void {
+    if(confirm(`Tem a certeza de que deseja eliminar o projeto "${this.project.name}"?`)){
+      this.projectService.deleteProject(this.project.id).subscribe({
+        next: ()=>{
+          this.projectDeleted.emit(this.project.id)
+        },
+        error:(err) => console.error('Erro ao eliminar o projeto:', err)
+      })
+    }
+  }
+
+  deleteTaskFromProject(taskId: string):void {
+    if(confirm('Tem a certeza de que deseja remover esta tarefa?')){
+      this.project.task = this.project.task.filter(t => t.id !== taskId)
+
+      this.updateProjectOnServer()
+    }
   }
 }
 

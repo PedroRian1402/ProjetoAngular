@@ -8,15 +8,19 @@ export class ProjectService {
     private http = inject(HttpClient)
     private apiUrl = 'http://localhost:3000/projects'
 
-    getProjects(): Observable<Project[]>{
+    getProjects(): Observable<Project[]> {
         return this.http.get<Project[]>(this.apiUrl)
     }
 
-    createProject(projectData: CreateProject): Observable<Project>{
-        return this.http.post<Project>(this.apiUrl,  projectData)
+    createProject(projectData: CreateProject): Observable<Project> {
+        return this.http.post<Project>(this.apiUrl, projectData)
     }
 
     updateProject(project: Project): Observable<Project> {
         return this.http.put<Project>(`${this.apiUrl}/${project.id}`, project)
+    }
+
+    deleteProject(projectId: string): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/${projectId}`)
     }
 }

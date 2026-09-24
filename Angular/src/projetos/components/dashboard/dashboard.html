@@ -21,7 +21,7 @@
 
   <div>
     @for (projectItem of projects; track projectItem.id) {
-    <app-project-card [project]="projectItem"></app-project-card>
+    <app-project-card [project]="projectItem" (projectDeleted)="handleDeleteProject($event)"></app-project-card>
     } @empty {
 
     <div>

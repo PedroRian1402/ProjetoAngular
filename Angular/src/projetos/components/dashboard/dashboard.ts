@@ -50,4 +50,10 @@ export class Dashboard {
   closeModal(): void {
     this.isModalOpen = false
   }
+
+  handleDeleteProject(deleteId: string):void {
+    this.projects = this.projects.filter( p => p.id !== deleteId)
+
+    this.cdr.detectChanges()
+  }
 }
