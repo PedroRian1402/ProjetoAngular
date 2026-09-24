@@ -1,0 +1,13 @@
+{
+    "projects": [
+        {
+            "id" : "1",
+            "name": "Desenvolvimento do MVP",
+            "description" : "Criar a primeira versão funcional da aplicação web utilizando Angular e Typescript.",
+            "task" : [
+                { "id": "101", "title": "Definir Interfaces", "isCompleted": true},
+                { "id" : "102", "title": "Criar cards para cada projeto.", "isCompleted": true}
+            ]
+        }
+    ]
+}
