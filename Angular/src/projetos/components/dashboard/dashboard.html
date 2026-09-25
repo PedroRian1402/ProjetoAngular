@@ -22,7 +22,7 @@
 
   <!-- Lista de Projetos -->
   <div class="projects-list">
-    @for (projectItem of projects; track projectItem.id) {
+    @for (projectItem of projectsSignal(); track projectItem.id) {
     <app-project-card [project]="projectItem" (projectDeleted)="handleDeleteProject($event)"></app-project-card>
     } @empty {
     <div class="empty-state">
