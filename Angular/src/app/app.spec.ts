@@ -16,9 +16,10 @@ describe('App', () => {
   });
 
   it('should render title', async () => {
-    const fixture = TestBed.createComponent(App);
+     const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Angular');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Dashboard de Projetos');
   });
 });
