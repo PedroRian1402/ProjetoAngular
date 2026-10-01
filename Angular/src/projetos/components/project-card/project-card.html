@@ -1,5 +1,23 @@
 <div class="project-card">
 
+    @if (isEditingProject) {
+    <div class="edit-form-container">
+        <h4>Editar Projeto</h4>
+        <div class="form-field">
+            <label>Nome do Projeto:</label>
+            <input #editProjName type="text" [value]="project.name" />
+        </div>
+        <div class="form-field">
+            <label>Descrição:</label>
+            <textarea #editProjDesc rows="3" [value]="project.description"></textarea>
+        </div>
+        <div class="form-actions-row">
+            <button type="button" class="btn-secondary"
+                (click)="saveProjectEdit(editProjName, editProjDesc)">Guardar</button>
+            <button type="button" class="btn-cancel" (click)="isEditingProject = false">Cancelar</button>
+        </div>
+    </div>
+    } @else {
     <!-- Cabeçalho do Projeto e Progresso -->
     <div class="card-header">
         <div class="header-main">
@@ -10,7 +28,11 @@
             <span class="progress-count">Tarefas: {{ completedTasks }}/{{ totalTasks }}</span>
             <span class="progress-badge">{{ progressPercentage }}%</span>
         </div>
+        <button type="button" class="btn-secondary" (click)="isEditingProject = true">Editar Projeto</button>
     </div>
+    }
+
+
 
     <!-- Corpo do Cartão: Tarefas -->
     <div class="card-body">
@@ -19,27 +41,86 @@
         <div class="tasks-container">
             @for (t of project.task; track t.id) {
             <div class="task-item">
+                @if (editingTaskId === t.id) {
+                <div class="edit-form-container">
+                    <h5>Editar Tarefa</h5>
+
+                    <div class="form-field">
+                        <label>Título:</label>
+                        <input #tTitle type="text" [value]="t.title" />
+                    </div>
+
+                    <div class="form-field">
+                        <label>Descrição:</label>
+                        <textarea #tDesc rows="2" [value]="t.description"></textarea>
+                    </div>
+
+                    <div class="form-group-row">
+                        <div class="form-field">
+                            <label>Data Limite:</label>
+                            <input #tDate type="date" [value]="t.dueDate" />
+                        </div>
+
+                        <div class="form-field">
+                            <label>Estado:</label>
+                            <select #tStatus [value]="t.status">
+                                <option value="pendente">Pendente</option>
+                                <option value="em progresso">Em Progresso</option>
+                                <option value="concluída">Concluída</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions-row">
+                        <button type="button" class="btn-secondary"
+                            (click)="saveTaskEdit(t.id, tTitle, tDesc, tDate, tStatus)">
+                            Guardar Tarefa
+                        </button>
+                        <button type="button" class="btn-cancel" (click)="editingTaskId = null">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+                }@else {
                 <div class="task-main-info">
-                    <label class="task-checkbox-label">
-                        <input type="checkbox" [checked]="t.status === 'concluída'" (change)="toggleTaskStatus(t)">
+
+                    <div class="task-header-row">
+
+                        <select [value]="t.status" (change)="changeTaskStatusQuick(t, selectStatus.value)" #selectStatus
+                            class="task-inline-select">
+                            <option value="pendente">Pendente</option>
+                            <option value="em progresso">Em Progresso</option>
+                            <option value="concluída">Concluída</option>
+                        </select>
+
+                        <!-- Título da Tarefa -->
                         <span [style.text-decoration]="t.status === 'concluída' ? 'line-through' : 'none'"
                             class="task-title">
                             {{ t.title }}
                         </span>
-                    </label>
+
+                        <div class="task-actions-inline">
+                            <button type="button" class="btn-secondary"
+                                (click)="editingTaskId = t.id">Editar</button>
+                            <button type="button" class="btn-text-danger"
+                                (click)="deleteTaskFromProject(t.id)">Remover</button>
+                        </div>
+                    </div>
 
                     <!-- Detalhes Secundários da Tarefa -->
                     <div class="task-details">
                         <p><strong>Descrição:</strong> {{ t.description }}</p>
                         <p><strong>Data Limite:</strong> {{ t.dueDate }}</p>
-                        <p><strong>Estado:</strong> <span class="status-text">{{ t.status }}</span></p>
+                        <p>
+                            <strong>Estado:</strong>
+                            <span [attr.data-status]="t.status">● {{ t.status }}</span>
+                        </p>
                     </div>
                 </div>
 
-                <button type="button" class="btn-text-danger" (click)="deleteTaskFromProject(t.id)">
-                    Remover
-                </button>
+                }
             </div>
+
             } @empty {
             <p class="empty-tasks">Sem tarefas associadas ao projeto.</p>
             }
