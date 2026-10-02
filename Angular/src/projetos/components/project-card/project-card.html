@@ -25,8 +25,8 @@
             <p class="project-desc">{{ project.description }}</p>
         </div>
         <div class="progress-box">
-            <span class="progress-count">Tarefas: {{ completedTasks }}/{{ totalTasks }}</span>
-            <span class="progress-badge">{{ progressPercentage }}%</span>
+            <span>Tarefas: {{ project.getCompletedTasks() }}/{{ project.getTotalTasks() }}</span>
+            <span>{{ project.getProgressPercentage() }}%</span>
         </div>
         <button type="button" class="btn-secondary" (click)="isEditingProject = true">Editar Projeto</button>
     </div>
@@ -100,8 +100,7 @@
                         </span>
 
                         <div class="task-actions-inline">
-                            <button type="button" class="btn-secondary"
-                                (click)="editingTaskId = t.id">Editar</button>
+                            <button type="button" class="btn-secondary" (click)="editingTaskId = t.id">Editar</button>
                             <button type="button" class="btn-text-danger"
                                 (click)="deleteTaskFromProject(t.id)">Remover</button>
                         </div>

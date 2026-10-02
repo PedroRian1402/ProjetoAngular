@@ -1,7 +1,7 @@
 import { Service, inject,signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Project, CreateProject } from '../types/project.types'
+import { Project, CreateProject, Task } from '../types/project.types'
 
 @Service()
 export class ProjectService {
@@ -50,5 +50,12 @@ export class ProjectService {
       },
       error: (err) => console.error('Erro na Store ao eliminar projeto:', err)
     });
+  }
+
+   private mapToProjectInstance(data: any): Project {
+    const tasks = (data.task || []).map(
+      (t: any) => new Task(t.title, t.description, t.dueDate, t.status, t.id)
+    );
+    return new Project(data.name, data.description, tasks, data.id);
   }
 }

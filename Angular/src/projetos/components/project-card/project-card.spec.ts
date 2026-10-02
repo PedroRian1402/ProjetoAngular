@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProjectCard } from './project-card';
 import { provideHttpClient } from '@angular/common/http';
 import { ProjectService } from '../../services/project';
+import { Project, Task } from '../../types/project.types';
 
 describe('ProjectCard', () => {
   let component: ProjectCard;
@@ -12,7 +13,7 @@ describe('ProjectCard', () => {
       imports: [ProjectCard],
       providers: [
         provideHttpClient(),
-        { provide: ProjectService, useValue: {}}
+        { provide: ProjectService, useValue: {} }
       ]
     }).compileComponents();
 
@@ -20,38 +21,30 @@ describe('ProjectCard', () => {
     component = fixture.componentInstance;
   });
 
-  it('deve calcular 0% de progresso se o projeto nascer sem tarefas', ()=>{
-    component.project = {
-      id: 'p-vazio',
-      name: 'Projeto Sem Tarefas',
-      description: 'Lógica à prova de erro',
-      task: []
-    }
+  it('deve calcular 0% de progresso se o projeto nascer sem tarefas', () => {
 
-    fixture.detectChanges()
+    component.project = new Project('Projeto Sem Tarefas', 'Lógica à prova de erro', [], 'p-vazio');
 
-    expect(component.totalTasks).toBe(0)
-    expect(component.completedTasks).toBe(0)
-    expect(component.progressPercentage).toBe(0)
-  })
+    fixture.detectChanges();
 
-  it('deve calcular a pecentagem exata com base nas tarefas com status "concluída"', ()=>{
-    component.project = {
-      id: 'p-reactivo',
-      name: 'Projecto Ativo',
-      description: 'Cálculo de progresso',
-      task: [
-        { id: 't1', title: 'T1', description: 'd', dueDate: '2026', status: 'concluída' },
-        { id: 't2', title: 'T2', description: 'd', dueDate: '2026', status: 'concluída' },
-        { id: 't3', title: 'T3', description: 'd', dueDate: '2026', status: 'pendente' }
-      ] 
-    }
+    expect(component.project.getTotalTasks()).toBe(0);
+    expect(component.project.getCompletedTasks()).toBe(0);
+    expect(component.project.getProgressPercentage()).toBe(0);
+  });
 
-    fixture.detectChanges()
+  it('deve calcular a percentagem exata com base nas tarefas com status "concluída"', () => {
+    const tarefasMock = [
+      new Task('T1', 'd', '2026', 'concluída', 't1'),
+      new Task('T2', 'd', '2026', 'concluída', 't2'),
+      new Task('T3', 'd', '2026', 'pendente', 't3')
+    ];
+    
+    component.project = new Project('Projeto Ativo', 'Cálculo de progresso', tarefasMock, 'p-reativo');
 
-    expect(component.totalTasks).toBe(3)
-    expect(component.completedTasks).toBe(2)
-    expect(component.progressPercentage).toBe(67)
-  }
-  )
+    fixture.detectChanges();
+
+    expect(component.project.getTotalTasks()).toBe(3);
+    expect(component.project.getCompletedTasks()).toBe(2);
+    expect(component.project.getProgressPercentage()).toBe(67);
+  });
 });
