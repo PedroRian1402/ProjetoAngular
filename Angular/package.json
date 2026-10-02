@@ -2,14 +2,12 @@
   "name": "angular",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "server": "npx json-server db.json --port 3000",
-    "dev": "concurrently \"npm run start\" \"npm run server\""
-  },
+  "ng": "ng",
+  "start": "ng serve",
+  "build": "ng build",
+  "watch": "ng watch",
+  "test": "ng test"
+},
   "private": true,
   "packageManager": "npm@11.16.0",
   "dependencies": {
