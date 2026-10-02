@@ -63,3 +63,27 @@
   color: #666666;
   font-size: 0.95rem;
 }
+
+.api-error-alert {
+    background-color: #fee2e2;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.api-error-message {
+    font-size: 0.95rem;
+}
+
+.alert-close-btn {
+    font-weight: bold;
+    margin-left: 1rem;
+    white-space: nowrap;
+}

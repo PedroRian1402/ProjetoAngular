@@ -18,8 +18,14 @@ export class Dashboard {
   projectsSignal = this.projectService.projects;
   isModalOpen = false;
 
+  errorMessageSignal = this.projectService.errorMessage
+
   constructor() {
     this.projectService.loadAllProjects()
+  }
+
+  dismissError():void {
+    this.projectService.clearError()
   }
 
   handleCreateProject(newProjectData: CreateProject): void {

@@ -47,9 +47,11 @@ export class ProjectForm {
   }
 
   onSubmit(): void {
-    if(this.projectForm.valid){
-      const formValue: CreateProject = this.projectForm.getRawValue()
+    if (this.projectForm.valid) {
+      const formValue = this.projectForm.getRawValue() as unknown as CreateProject
+      
       this.submitSuccess.emit(formValue)
+      this.projectForm.reset()
     } else {
       this.projectForm.markAllAsTouched()
     }

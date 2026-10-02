@@ -4,6 +4,19 @@
   <div class="dashboard-header">
     <div>
       <h1>Dashboard de Projetos</h1>
+
+ @if (errorMessageSignal()) {
+    <div class="api-error-alert">
+      
+      <span class="api-error-message"><strong>Erro do Servidor:</strong> {{ errorMessageSignal() }}</span>
+      
+      <button type="button" class="btn-text-danger alert-close-btn"  (click)="dismissError()" >
+        [Fechar X]
+      </button>
+
+    </div>
+  }
+
       <p>Gira os seus projetos e acompanhe o progresso.</p>
     </div>
 

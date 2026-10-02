@@ -70,3 +70,11 @@ export interface CreateProject {
   description: string;
   task: Task[];
 }
+
+export interface CreateTaskInput {
+  id: string;
+  title: string;
+  description: string;
+  dueDate: string;
+  status: TaskStatus;
+}
